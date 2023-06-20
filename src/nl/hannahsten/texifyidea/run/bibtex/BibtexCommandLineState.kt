@@ -18,6 +18,7 @@ open class BibtexCommandLineState(
 
     @Throws(ExecutionException::class)
     override fun startProcess(): ProcessHandler {
+
         val compiler = runConfig.compiler ?: throw ExecutionException("No valid compiler specified.")
         val command: List<String> = compiler.getCommand(runConfig, environment.project) ?: throw ExecutionException("Compile command could not be created.")
 

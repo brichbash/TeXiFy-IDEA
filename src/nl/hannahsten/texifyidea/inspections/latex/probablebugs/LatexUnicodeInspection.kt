@@ -96,6 +96,7 @@ class LatexUnicodeInspection : TexifyInspectionBase() {
     override val inspectionId = "Unicode"
 
     override fun inspectFile(file: PsiFile, manager: InspectionManager, isOntheFly: Boolean): List<ProblemDescriptor> {
+
         val hasUnicode = unicodeEnabled(file)
 
         val descriptors = descriptorList()

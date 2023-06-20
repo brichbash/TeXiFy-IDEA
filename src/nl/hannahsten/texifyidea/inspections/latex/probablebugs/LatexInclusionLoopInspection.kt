@@ -38,6 +38,7 @@ open class LatexInclusionLoopInspection : TexifyInspectionBase() {
 
             // Do not use ImportPackage#searchFileByImportPaths, because if we would do that for every command, that would be way too expensive.
             for (referenced in declaredIn.findIncludedFile(command)) {
+
                 inclusions.getOrPut(declaredIn) { mutableSetOf() }.add(referenced)
 
                 if (declaredIn == file && inclusions.getOrDefault(referenced, mutableSetOf()).contains(declaredIn)) {

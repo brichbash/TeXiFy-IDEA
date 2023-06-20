@@ -113,6 +113,7 @@ class TexifyConventionsConfigurable(project: Project) : SearchableConfigurable, 
     }
 
     override fun createComponent(): JComponent {
+
         schemesPanel = TexifyConventionsSchemesPanel(unsavedSettings)
 
         /**

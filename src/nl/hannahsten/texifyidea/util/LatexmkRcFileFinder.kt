@@ -147,7 +147,6 @@ object LatexmkRcFileFinder {
         }
         val project = someFile?.project ?: return null
         val projectDir = project.guessProjectDir()
-        if (projectDir?.isValid == false) return null
         projectDir?.findChild(".latexmkrc")?.let { return getTexinputs(it) }
         projectDir?.findChild("latexmkrc")?.let { return getTexinputs(it) }
         projectDir?.children?.forEach { directory ->

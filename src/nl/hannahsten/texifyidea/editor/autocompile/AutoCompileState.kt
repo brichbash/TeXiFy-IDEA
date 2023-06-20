@@ -46,6 +46,7 @@ object AutoCompileState {
      */
     @Synchronized
     fun compileDone() {
+
         // Only compile again if needed
         if (hasChanged) {
             scheduleCompilation()
@@ -56,6 +57,7 @@ object AutoCompileState {
     }
 
     private fun scheduleCompilation() {
+
         if (project == null) {
             Notification("LaTeX", "Could not auto-compile", "Please make sure you have compiled the document first.", NotificationType.WARNING).notify(null)
 

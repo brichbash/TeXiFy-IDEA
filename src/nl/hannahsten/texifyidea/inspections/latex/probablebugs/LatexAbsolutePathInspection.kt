@@ -29,6 +29,7 @@ class LatexAbsolutePathInspection : TexifyInspectionBase() {
 
         // Loop through commands of file
         for (command in commands) {
+
             // There may be multiple commands with this name, just guess the first one
             val latexCommand = LatexCommand.lookup(command.name)?.firstOrNull() ?: continue
 
@@ -36,15 +37,16 @@ class LatexAbsolutePathInspection : TexifyInspectionBase() {
             val requiredArguments = latexCommand.arguments.mapNotNull { it as? RequiredArgument }
 
             // Loop through arguments
-            for (i in command.getRequiredParameters().indices) {
+            for (i in command.requiredParameters.indices) {
+
                 // Find the corresponding requiredArgument
                 val requiredArgument = if (i < requiredArguments.size) requiredArguments[i] else requiredArguments.lastOrNull() ?: continue
 
                 // Check if the actual argument is a file argument or continue with the next argument
                 val fileArgument = requiredArgument as? RequiredFileArgument ?: continue
-                val offset = command.text.indexOf(command.getRequiredParameters()[i])
+                val offset = command.text.indexOf(command.requiredParameters[i])
                 if (offset == -1) continue
-                val range = TextRange(0, command.getRequiredParameters()[i].length).shiftRight(offset)
+                val range = TextRange(0, command.requiredParameters[i].length).shiftRight(offset)
 
                 if (File(range.substring(command.text)).isAbsolute && !fileArgument.isAbsolutePathSupported) {
                     descriptors.add(

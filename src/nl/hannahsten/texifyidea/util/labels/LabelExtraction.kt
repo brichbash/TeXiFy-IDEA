@@ -5,21 +5,20 @@ import com.jetbrains.rd.util.first
 import nl.hannahsten.texifyidea.lang.alias.CommandManager
 import nl.hannahsten.texifyidea.lang.commands.LatexGenericRegularCommand
 import nl.hannahsten.texifyidea.psi.*
+import nl.hannahsten.texifyidea.util.firstChildOfType
+import nl.hannahsten.texifyidea.util.identifier
 import nl.hannahsten.texifyidea.util.magic.CommandMagic
 import nl.hannahsten.texifyidea.util.magic.EnvironmentMagic
-import nl.hannahsten.texifyidea.util.parser.firstChildOfType
-import nl.hannahsten.texifyidea.util.parser.getIdentifier
-import nl.hannahsten.texifyidea.util.parser.requiredParameter
-import nl.hannahsten.texifyidea.util.parser.toStringMap
+import nl.hannahsten.texifyidea.util.requiredParameter
 
 /**
  * Extracts the label element (so the element that should be resolved to) from the PsiElement given that the PsiElement represents a label.
  */
 fun PsiElement.extractLabelElement(): PsiElement? {
     fun getLabelParameterText(command: LatexCommandWithParams): LatexParameterText {
-        val optionalParameters = command.getOptionalParameterMap()
+        val optionalParameters = command.optionalParameterMap
         val labelEntry = optionalParameters.filter { pair -> pair.key.toString() == "label" }.first()
-        val contentList = labelEntry.value?.keyValContentList ?: emptyList()
+        val contentList = labelEntry.value.keyValContentList
         return contentList.firstOrNull { c -> c.parameterText != null }?.parameterText
             ?: contentList.first { c -> c.parameterGroup != null }.parameterGroup!!.parameterGroupText!!.parameterTextList.first()
     }
@@ -41,7 +40,7 @@ fun PsiElement.extractLabelElement(): PsiElement? {
             }
         }
         is LatexEnvironment -> {
-            if (EnvironmentMagic.labelAsParameter.contains(getEnvironmentName())) {
+            if (EnvironmentMagic.labelAsParameter.contains(environmentName)) {
                 getLabelParameterText(beginCommand)
             }
             else {
@@ -60,10 +59,10 @@ fun PsiElement.extractLabelElement(): PsiElement? {
  */
 fun PsiElement.extractLabelName(referencingFileSetCommands: Collection<LatexCommands>? = null): String {
     return when (this) {
-        is BibtexEntry -> this.getIdentifier()
+        is BibtexEntry -> identifier() ?: ""
         is LatexCommands -> {
             if (CommandMagic.labelAsParameter.contains(name)) {
-                getOptionalParameterMap().toStringMap()["label"] ?: ""
+                optionalParameterMap.toStringMap()["label"] ?: ""
             }
             else {
                 // For now just take the first label name (which may be multiple for user defined commands)
@@ -85,8 +84,7 @@ fun PsiElement.extractLabelName(referencingFileSetCommands: Collection<LatexComm
                 prefix + this.requiredParameter(position)
             }
         }
-
-        is LatexEnvironment -> this.getLabel() ?: ""
+        is LatexEnvironment -> this.label ?: ""
         else -> text
     }
 }

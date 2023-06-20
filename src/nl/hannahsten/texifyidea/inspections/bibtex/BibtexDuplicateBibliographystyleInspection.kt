@@ -31,6 +31,7 @@ open class BibtexDuplicateBibliographystyleInspection : TexifyInspectionBase() {
     override fun getDisplayName() = "Duplicate bibliography style commands"
 
     override fun inspectFile(file: PsiFile, manager: InspectionManager, isOntheFly: Boolean): MutableList<ProblemDescriptor> {
+
         // Chapterbib allows multiple bibliographies
         if (file.includedPackages().any { it == LatexPackage.CHAPTERBIB }) {
             return mutableListOf()

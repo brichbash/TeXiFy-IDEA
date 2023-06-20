@@ -18,7 +18,7 @@ import nl.hannahsten.texifyidea.psi.LatexInlineMath
 import nl.hannahsten.texifyidea.psi.LatexTypes
 import nl.hannahsten.texifyidea.settings.TexifySettings.Companion.getInstance
 import nl.hannahsten.texifyidea.util.files.isLatexFile
-import nl.hannahsten.texifyidea.util.parser.inVerbatim
+import nl.hannahsten.texifyidea.util.inVerbatim
 import nl.hannahsten.texifyidea.util.orFalse
 
 /**
@@ -115,7 +115,6 @@ class LatexTypedHandler : TypedHandlerDelegate() {
         if (tokenType === LatexTypes.DISPLAY_MATH_START) {
             // Checks if a bracket has already been inserted, if so: don't insert a 2nd one.
             val offset = editor.caretModel.offset
-            if (offset >= editor.document.textLength) return Result.CONTINUE
             val bracketHuh = editor.document.getText(TextRange.from(offset, 1))
             val insertString = "\\" + if ("]" == bracketHuh) "" else "]"
             editor.document.insertString(offset, insertString)

@@ -42,7 +42,6 @@ class TexifySettings : PersistentStateComponent<TexifySettingsState> {
     var enableExternalIndex = true
     var enableTextidote = false
     var textidoteOptions = "--check en --output singleline --no-color"
-    var latexIndentOptions = ""
     var automaticQuoteReplacement = QuoteReplacement.NONE
 
     /**
@@ -67,7 +66,6 @@ class TexifySettings : PersistentStateComponent<TexifySettingsState> {
             enableExternalIndex = enableExternalIndex,
             enableTextidote = enableTextidote,
             textidoteOptions = textidoteOptions,
-            latexIndentOptions = latexIndentOptions,
             automaticQuoteReplacement = automaticQuoteReplacement,
             pdfViewer = pdfViewer
         )
@@ -86,7 +84,6 @@ class TexifySettings : PersistentStateComponent<TexifySettingsState> {
         enableExternalIndex = state.enableExternalIndex
         enableTextidote = state.enableTextidote
         textidoteOptions = state.textidoteOptions
-        latexIndentOptions = state.latexIndentOptions
         automaticQuoteReplacement = state.automaticQuoteReplacement
         pdfViewer = state.pdfViewer
     }

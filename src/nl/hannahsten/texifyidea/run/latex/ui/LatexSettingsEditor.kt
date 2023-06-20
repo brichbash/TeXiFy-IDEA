@@ -44,7 +44,6 @@ class LatexSettingsEditor(private var project: Project?) : SettingsEditor<LatexR
     private lateinit var environmentVariables: EnvironmentVariablesComponent
     private lateinit var mainFile: LabeledComponent<ComponentWithBrowseButton<*>>
     private lateinit var outputPath: LabeledComponent<ComponentWithBrowseButton<*>>
-
     // Not shown on non-MiKTeX systems
     private var auxilPath: LabeledComponent<ComponentWithBrowseButton<*>>? = null
 
@@ -319,6 +318,7 @@ class LatexSettingsEditor(private var project: Project?) : SettingsEditor<LatexR
     private fun addOutputPathField(panel: JPanel) {
         // The aux directory is only available on MiKTeX, so only allow disabling on MiKTeX
         if (LatexSdkUtil.isMiktexAvailable) {
+
             val auxilPathField = TextFieldWithBrowseButton()
             auxilPathField.addBrowseFolderListener(
                 TextBrowseFolderListener(

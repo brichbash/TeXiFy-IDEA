@@ -5,8 +5,6 @@ import com.intellij.openapi.fileEditor.FileDocumentManager
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.PsiFile
-import com.intellij.util.execution.ParametersListUtil
-import nl.hannahsten.texifyidea.settings.TexifySettings
 import nl.hannahsten.texifyidea.util.files.isLatexFile
 
 /**
@@ -24,7 +22,7 @@ class ReformatWithLatexindent : ExternalReformatAction("Reformat File with Latex
             FileDocumentManager.getInstance().saveDocument(document)
         }
         // latexindent as command seems to work more often than latexindent.pl
-        return listOf("latexindent") + ParametersListUtil.parse(TexifySettings.getInstance().latexIndentOptions) + listOf(file.name)
+        return listOf("latexindent", file.name)
     }
 
     override fun processOutput(output: String, file: PsiFile, project: Project) {

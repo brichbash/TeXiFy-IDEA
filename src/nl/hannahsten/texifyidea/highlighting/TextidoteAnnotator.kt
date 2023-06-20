@@ -39,9 +39,7 @@ data class TextidoteAnnotationResult(
 
 class TextidoteAnnotator : DumbAware, ExternalAnnotator<TextidoteAnnotatorInitialInfo, TextidoteAnnotationResult>() {
 
-    override fun collectInformation(file: PsiFile, editor: Editor, hasErrors: Boolean): TextidoteAnnotatorInitialInfo? {
-        if (file.containingDirectory == null) return null
-
+    override fun collectInformation(file: PsiFile, editor: Editor, hasErrors: Boolean): TextidoteAnnotatorInitialInfo {
         return TextidoteAnnotatorInitialInfo(
             file.virtualFile.name,
             File(file.containingDirectory.virtualFile.path),
@@ -100,6 +98,7 @@ class TextidoteAnnotator : DumbAware, ExternalAnnotator<TextidoteAnnotatorInitia
     }
 
     override fun apply(file: PsiFile, annotationResult: TextidoteAnnotationResult, holder: AnnotationHolder) {
+
         for (warning in annotationResult.warnings) {
             val document = annotationResult.document
 
@@ -108,19 +107,13 @@ class TextidoteAnnotator : DumbAware, ExternalAnnotator<TextidoteAnnotatorInitia
                 continue
             }
 
-            // In Textidote, everything is 1-based, and here everything is 0-based
+            // In Textidote, everything is 1-based, and here everyting is 0-based
             val lineStartOffset1 = document.getLineStartOffset(warning.startLine - 1)
             val lineStartOffset2 = document.getLineStartOffset(warning.endLine - 1)
 
-            val startOffset = lineStartOffset1 + warning.startColumn - 1
-            val endOffset = lineStartOffset2 + warning.endColumn - 1
-
-            // Check if computed range falls in the document range.
-            if (startOffset < document.textLength && endOffset < document.textLength) {
-                holder.newAnnotation(HighlightSeverity.WARNING, warning.message + " (Textidote)")
-                    .range(TextRange(startOffset, endOffset))
-                    .create()
-            }
+            holder.newAnnotation(HighlightSeverity.WARNING, warning.message + " (Textidote)")
+                .range(TextRange(lineStartOffset1 + warning.startColumn - 1, lineStartOffset2 + warning.endColumn - 1))
+                .create()
         }
 
         super.apply(file, annotationResult, holder)

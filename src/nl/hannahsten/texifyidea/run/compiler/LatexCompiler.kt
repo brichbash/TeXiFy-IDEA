@@ -231,6 +231,7 @@ enum class LatexCompiler(private val displayName: String, val executableName: St
             moduleRoot: VirtualFile?,
             moduleRoots: Array<VirtualFile>
         ): MutableList<String> {
+
             // The available command line arguments can be found at https://github.com/tectonic-typesetting/tectonic/blob/d7a8497c90deb08b5e5792a11d6e8b082f53bbb7/src/bin/tectonic.rs#L158
             val command = mutableListOf(runConfig.compilerPath ?: executableName)
 
@@ -261,6 +262,7 @@ enum class LatexCompiler(private val displayName: String, val executableName: St
             moduleRoot: VirtualFile?,
             moduleRoots: Array<VirtualFile>
         ): MutableList<String> {
+
             // Arara handles everything as configured by magic comments in the file.
             // We cannot use --verbose because it relies on user input
             return mutableListOf(runConfig.compilerPath ?: executableName)

@@ -17,7 +17,6 @@ import nl.hannahsten.texifyidea.psi.*
 import nl.hannahsten.texifyidea.util.*
 import nl.hannahsten.texifyidea.util.files.commandsInFile
 import nl.hannahsten.texifyidea.util.magic.CommandMagic
-import nl.hannahsten.texifyidea.util.parser.*
 import java.util.*
 
 /**
@@ -46,7 +45,7 @@ open class LatexCollapseCiteInspection : TexifyInspectionBase() {
             .filter { it.name in CommandMagic.bibliographyReference }
 
         for (cmd in commands) {
-            val bundle = cmd.findCiteBundle().filter { it.getOptionalParameterMap().isEmpty() }
+            val bundle = cmd.findCiteBundle().filter { it.optionalParameterMap.isEmpty() }
             if (bundle.size < 2 || !bundle.contains(cmd)) {
                 continue
             }
@@ -157,7 +156,7 @@ open class LatexCollapseCiteInspection : TexifyInspectionBase() {
 
             // Create the content of the required parameter of the new cite command.
             val bundle = sortedBundle
-                .flatMap { it.getRequiredParameters() }
+                .flatMap { it.requiredParameters }
                 .joinToString(",")
 
             // Find the cite command that has to be replaced. When the bundle contains a gap, this is the command

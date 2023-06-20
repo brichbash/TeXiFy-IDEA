@@ -2,6 +2,7 @@ package nl.hannahsten.texifyidea.action.preview
 
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.Key
+import com.intellij.openapi.wm.RegisterToolWindowTask
 import com.intellij.openapi.wm.ToolWindowManager
 import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.PsiElement
@@ -44,13 +45,9 @@ abstract class PreviewAction(name: String, val icon: Icon?) : EditorAction(name,
         val toolWindowId = name
         val toolWindowManager = ToolWindowManager.getInstance(project)
 
+        val task = RegisterToolWindowTask(toolWindowId, contentFactory = PreviewToolWindowFactory(), icon = icon)
         // Avoid adding it twice
-        // Note: the plugin verifier claims this is Internal api, but it's not:
-        // https://intellij-support.jetbrains.com/hc/en-us/community/posts/11533368171026-Registering-a-tool-window-programmatically
-        val toolWindow = toolWindowManager.getToolWindow(toolWindowId) ?: toolWindowManager.registerToolWindow(toolWindowId) {
-            contentFactory = PreviewToolWindowFactory()
-            icon = this@PreviewAction.icon
-        }
+        val toolWindow = toolWindowManager.getToolWindow(toolWindowId) ?: toolWindowManager.registerToolWindow(task)
 
         val containingFile = element.containingFile
         val psiDocumentManager = PsiDocumentManager.getInstance(project)

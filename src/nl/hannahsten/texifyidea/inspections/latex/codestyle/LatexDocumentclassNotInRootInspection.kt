@@ -7,9 +7,8 @@ import com.intellij.psi.PsiFile
 import nl.hannahsten.texifyidea.inspections.InsightGroup
 import nl.hannahsten.texifyidea.inspections.TexifyInspectionBase
 import nl.hannahsten.texifyidea.psi.LatexEnvironment
-import nl.hannahsten.texifyidea.psi.getEnvironmentName
+import nl.hannahsten.texifyidea.util.childrenOfType
 import nl.hannahsten.texifyidea.util.files.commandsInFile
-import nl.hannahsten.texifyidea.util.parser.childrenOfType
 import org.jetbrains.annotations.Nls
 
 class LatexDocumentclassNotInRootInspection : TexifyInspectionBase() {
@@ -28,7 +27,7 @@ class LatexDocumentclassNotInRootInspection : TexifyInspectionBase() {
     override fun inspectFile(file: PsiFile, manager: InspectionManager, isOntheFly: Boolean): List<ProblemDescriptor> {
         val documentClass = file.commandsInFile().find { it.name == "\\documentclass" } ?: return emptyList()
 
-        val hasDocumentEnvironment = file.childrenOfType<LatexEnvironment>().any { it.getEnvironmentName() == "document" }
+        val hasDocumentEnvironment = file.childrenOfType<LatexEnvironment>().any { it.environmentName == "document" }
 
         if (!hasDocumentEnvironment) {
             return listOf(

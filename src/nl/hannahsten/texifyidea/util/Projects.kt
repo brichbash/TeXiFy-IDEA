@@ -1,6 +1,7 @@
 package nl.hannahsten.texifyidea.util
 
 import com.intellij.execution.RunManager
+import com.intellij.execution.impl.RunManagerImpl
 import com.intellij.openapi.application.ApplicationNamesInfo
 import com.intellij.openapi.application.runReadAction
 import com.intellij.openapi.fileEditor.FileEditorManager
@@ -47,7 +48,7 @@ val Project.sourceSetSearchScope: GlobalSearchScope
 fun Project.findAvailableDocumentClasses(): Set<String> {
     val defines = LatexDefinitionIndex.getCommandsByName("ProvidesClass", this, sourceSetSearchScope)
     return defines.asSequence()
-        .map { it.getRequiredParameters() }
+        .map { it.requiredParameters }
         .filter { it.isNotEmpty() }
         .mapNotNull { it.firstOrNull() }
         .toSet()
@@ -80,7 +81,7 @@ fun Project.allFiles(type: FileType): Collection<VirtualFile> {
  */
 fun Project.getLatexRunConfigurations(): Collection<LatexRunConfiguration> {
     if (isDisposed) return emptyList()
-    return RunManager.getInstance(this).allConfigurationsList.filterIsInstance<LatexRunConfiguration>()
+    return (RunManagerImpl.getInstanceImpl(this) as RunManager).allConfigurationsList.filterIsInstance<LatexRunConfiguration>()
 }
 
 /**

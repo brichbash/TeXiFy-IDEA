@@ -44,6 +44,7 @@ class LatexErrorReportSubmitter : ErrorReportSubmitter() {
         }
 
         if (latestVersion.version.toString().isNotBlank() && DefaultArtifactVersion(currentVersion) < latestVersion.version) {
+
             val currentIdeaVersion = DefaultArtifactVersion(ApplicationInfo.getInstance().build.asStringWithoutProductCode())
             val requiredIdeaVersion = latestVersion.ideaVersion.sinceBuild
 

@@ -19,7 +19,6 @@ import nl.hannahsten.texifyidea.structure.bibtex.BibtexStructureViewEntryElement
 import nl.hannahsten.texifyidea.ui.remotelibraries.LibraryMutableTreeNode
 import nl.hannahsten.texifyidea.ui.remotelibraries.findLibraryNode
 import nl.hannahsten.texifyidea.util.TexifyDataKeys
-import nl.hannahsten.texifyidea.util.parser.getIdentifier
 import java.util.*
 import javax.swing.tree.DefaultMutableTreeNode
 import javax.swing.tree.DefaultTreeModel
@@ -80,14 +79,14 @@ class SyncLibraryAction : AnAction() {
                                     ?: LibraryMutableTreeNode(library.identifier, library.displayName)
                                 libraryNode.children().asSequence()
                                     .map { it as DefaultMutableTreeNode }
-                                    .filter { (it.userObject as BibtexStructureViewEntryElement).entry.getIdentifier() !in bibItems.map { bib -> bib.getIdentifier() } }
+                                    .filter { (it.userObject as BibtexStructureViewEntryElement).entry.identifier !in bibItems.map { bib -> bib.identifier } }
                                     .forEach { libraryNode.remove(it) }
 
                                 val itemsInLib = libraryNode.children().asSequence()
-                                    .map { ((it as DefaultMutableTreeNode).userObject as BibtexStructureViewEntryElement).entry.getIdentifier() }
+                                    .map { ((it as DefaultMutableTreeNode).userObject as BibtexStructureViewEntryElement).entry.identifier }
                                     .toList()
                                 bibItems.forEach { bib ->
-                                    if (bib.getIdentifier() !in itemsInLib) {
+                                    if (bib.identifier !in itemsInLib) {
                                         val entryElement = BibtexStructureViewEntryElement(bib)
                                         val entryNode = DefaultMutableTreeNode(entryElement)
                                         libraryNode.add(entryNode)

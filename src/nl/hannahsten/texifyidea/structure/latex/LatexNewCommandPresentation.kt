@@ -5,8 +5,8 @@ import nl.hannahsten.texifyidea.TexifyIcons
 import nl.hannahsten.texifyidea.lang.commands.LatexNewDefinitionCommand
 import nl.hannahsten.texifyidea.lang.commands.LatexXparseCommand
 import nl.hannahsten.texifyidea.psi.LatexCommands
-import nl.hannahsten.texifyidea.util.parser.toStringMap
-import nl.hannahsten.texifyidea.util.parser.nextCommand
+import nl.hannahsten.texifyidea.psi.toStringMap
+import nl.hannahsten.texifyidea.util.nextCommand
 
 /**
  * @author Hannah Schellekens
@@ -18,7 +18,7 @@ class LatexNewCommandPresentation(newCommand: LatexCommands) : ItemPresentation 
 
     init {
         // Fetch parameter amount.
-        val optional = newCommand.getOptionalParameterMap().toStringMap().keys.toList()
+        val optional = newCommand.optionalParameterMap.toStringMap().keys.toList()
         var params = -1
         if (optional.isNotEmpty()) {
             try {
@@ -30,7 +30,7 @@ class LatexNewCommandPresentation(newCommand: LatexCommands) : ItemPresentation 
         val suffix = if (params != -1) "{x$params}" else ""
 
         // Get command name.
-        val required = newCommand.getRequiredParameters()
+        val required = newCommand.requiredParameters
         val command = if (required.isNotEmpty()) {
             required.first()
         }

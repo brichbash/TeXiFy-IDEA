@@ -1,6 +1,7 @@
 package nl.hannahsten.texifyidea.settings.sdk
 
 import com.intellij.codeInsight.daemon.ProjectSdkSetupValidator
+import com.intellij.openapi.module.ModuleManager
 import com.intellij.openapi.module.ModuleUtilCore
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.projectRoots.SdkTypeId
@@ -10,8 +11,9 @@ import com.intellij.openapi.roots.ui.configuration.SdkPopupFactory
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiManager
 import com.intellij.ui.EditorNotificationPanel
-import nl.hannahsten.texifyidea.file.LatexFileType
 import nl.hannahsten.texifyidea.grammar.LatexLanguage
+import nl.hannahsten.texifyidea.file.LatexFileType
+import nl.hannahsten.texifyidea.modules.LatexModuleType
 
 /**
  * https://jetbrains.org/intellij/sdk/docs/reference_guide/project_model/sdk.html#assisting-in-setting-up-an-sdk
@@ -22,7 +24,8 @@ class LatexProjectSdkSetupValidator : ProjectSdkSetupValidator {
 
     override fun isApplicableFor(project: Project, file: VirtualFile): Boolean {
         // Check if setting up a LaTeX SDK would make sense
-        return file.fileType is LatexFileType || PsiManager.getInstance(project).findFile(file)?.language?.isKindOf(LatexLanguage) == true
+        val isLatexFile = file.fileType is LatexFileType || PsiManager.getInstance(project).findFile(file)?.language?.isKindOf(LatexLanguage) == true
+        return ModuleManager.getInstance(project).modules.any { it.moduleTypeName == LatexModuleType.ID } && isLatexFile
     }
 
     override fun getErrorMessage(project: Project, file: VirtualFile): String? {

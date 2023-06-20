@@ -23,7 +23,6 @@ import nl.hannahsten.texifyidea.util.*
 import nl.hannahsten.texifyidea.util.files.commandsInFile
 import nl.hannahsten.texifyidea.util.files.definitionsAndRedefinitionsInFileSet
 import nl.hannahsten.texifyidea.util.magic.PackageMagic
-import nl.hannahsten.texifyidea.util.parser.*
 import java.util.*
 
 /**
@@ -42,6 +41,7 @@ open class LatexMissingImportInspection : TexifyInspectionBase() {
     override fun getDisplayName() = "Missing imports"
 
     override fun inspectFile(file: PsiFile, manager: InspectionManager, isOntheFly: Boolean): List<ProblemDescriptor> {
+
         if (!TexifySettings.getInstance().automaticDependencyCheck) {
             return emptyList()
         }
@@ -107,6 +107,7 @@ open class LatexMissingImportInspection : TexifyInspectionBase() {
     ) {
         val commands = file.commandsInFile()
         commandLoop@ for (command in commands) {
+
             // If we are actually defining the command, then it doesn't need any dependency
             if (command.parent.firstParentOfType(LatexCommands::class).isCommandDefinition()) {
                 continue

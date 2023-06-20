@@ -11,7 +11,7 @@ import nl.hannahsten.texifyidea.action.preview.ShowTikzPreview
 import nl.hannahsten.texifyidea.file.LatexFileType
 import nl.hannahsten.texifyidea.settings.TexifySettings
 import nl.hannahsten.texifyidea.util.files.isLatexFile
-import nl.hannahsten.texifyidea.util.parser.findOuterMathEnvironment
+import nl.hannahsten.texifyidea.util.findOuterMathEnvironment
 
 /**
  * On every added (or deleted, see [ContinuousPreviewBackspacehandler]) character, initiate a preview.
@@ -19,6 +19,7 @@ import nl.hannahsten.texifyidea.util.parser.findOuterMathEnvironment
 class ContinuousPreviewHandler : TypedHandlerDelegate() {
 
     override fun charTyped(char: Char, project: Project, editor: Editor, file: PsiFile): Result {
+
         run {
             // Only do this for latex files and if the option is enabled
             if (file.fileType != LatexFileType || !TexifySettings.getInstance().continuousPreview) {
