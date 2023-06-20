@@ -116,7 +116,7 @@ open class LatexGatherEquationsInspection : TexifyInspectionBase() {
             // Lookahead.
             content = base.nextSiblingIgnoreWhitespace()
             while (content is LatexNoMathContent && content.isDisplayMath()) {
-                equations.add(content)
+                equations.add(content) // trigger qodana
                 content = content.nextSiblingIgnoreWhitespace()
             }
 

@@ -140,7 +140,7 @@ class LatexBlock(
         return Triple(sectionLevel, extraSectionIndent, targetIndent)
     }
 
-    override fun getIndent(): Indent? {
+    override fun getIndent(): Indent? { // trigger Qodana
         val shouldIndentDocumentEnvironment = CodeStyle.getCustomSettings(node.psi.containingFile, LatexCodeStyleSettings::class.java).INDENT_DOCUMENT_ENVIRONMENT
         val shouldIndentEnvironment = myNode.elementType === LatexTypes.ENVIRONMENT_CONTENT && (
             (myNode.psi as LatexEnvironmentContent)
