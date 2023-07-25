@@ -28,6 +28,7 @@ jobs:
         with:
           post-pr-comment: false
           pr-mode: false
+          upload-result: true
           args: >
             --baseline,qodana.sarif.json,
             --source-directory,src
